@@ -52,9 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable(); //http Authorization id,pw 인증방식 제거
 
         http.authorizeRequests()
-                //로그인
-                .antMatchers(HttpMethod.GET,"/api/v1/oauth/**")
-                .permitAll()
 
                 .antMatchers(HttpMethod.GET, "/oauth2/**")
                 .permitAll()
@@ -63,6 +60,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api/v1/login/success")
+                .permitAll()
+
+                .antMatchers(HttpMethod.GET, "/api/v1/**")
+                .permitAll()
+
+                .antMatchers(HttpMethod.DELETE, "/api/v1/**")
+                .permitAll()
+
+                .antMatchers(HttpMethod.POST, "/api/v1/**")
+                .permitAll()
+
+                .antMatchers(HttpMethod.POST, "/api/v1/**")
                 .permitAll()
 
                 .anyRequest().authenticated();

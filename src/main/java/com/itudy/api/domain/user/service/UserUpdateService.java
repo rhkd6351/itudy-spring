@@ -3,6 +3,7 @@ package com.itudy.api.domain.user.service;
 
 import com.itudy.api.domain.user.domain.AuthVO;
 import com.itudy.api.domain.user.domain.UserVO;
+import com.itudy.api.domain.user.dto.UpdateInfo;
 import com.itudy.api.domain.user.repository.UserRepository;
 import com.itudy.api.exception.ApiException;
 import com.itudy.api.exception.ExceptionEnum;
@@ -15,13 +16,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UserUpdateService {
-
 
     private final UserRepository userRepository;
     private final AuthFindService authFindService;
+    private final UserFindService userFindService;
 
+    @Transactional
     public Long getSignUp(String email, String oauth, String nickname, String picture) {
         Optional<UserVO> user = userRepository.findByEmail(email);
 
@@ -44,5 +45,11 @@ public class UserUpdateService {
                 .build();
 
         return userRepository.save(userVO).getIdx();
+    }
+
+    @Transactional
+    public void update(Long userIdx, UpdateInfo.Request updateInfo) {
+        UserVO user = userFindService.findByIdx(userIdx);
+        user.setNickname(updateInfo.getNickname());
     }
 }

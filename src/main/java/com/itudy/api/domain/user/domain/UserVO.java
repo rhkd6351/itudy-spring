@@ -59,4 +59,24 @@ public class UserVO {
         this.auth = auth;
         this.imageUrl = imageUrl;
     }
+
+    public enum Oauth {
+        KAKAO("kakao"),
+        GOOGLE("google"),
+        FACEBOOK("facebook");
+
+        final String value;
+
+        Oauth(String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
