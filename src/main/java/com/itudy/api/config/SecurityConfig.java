@@ -4,6 +4,7 @@ import com.itudy.api.jwt.JwtAccessDeniedHandler;
 import com.itudy.api.jwt.JwtAuthenticationEntryPoint;
 import com.itudy.api.jwt.JwtSecurityConfig;
 import com.itudy.api.jwt.TokenProvider;
+import com.itudy.api.oauth.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-//    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 //    private final OauthCustomSuccessHandler oauthCustomSuccessHandler;
 
     @Bean
@@ -55,6 +56,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/v1/oauth/**")
                 .permitAll()
 
+                .antMatchers(HttpMethod.GET, "/oauth2/**")
+                .permitAll()
+
+                .antMatchers(HttpMethod.GET, "/login/**")
+                .permitAll()
+
+                .antMatchers(HttpMethod.GET, "/api/v1/login/success")
+                .permitAll()
+
                 .anyRequest().authenticated();
 
         //JWT 설정
@@ -65,12 +75,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
 
-//        http
-//                .oauth2Login()
-//                .userInfoEndpoint()
-//                .userService(customOAuth2UserService)
-//                .and()
-//                .defaultSuccessUrl("/api/v1/login/success");
+        http
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .defaultSuccessUrl("/api/v1/login/success");
 
 
     }

@@ -39,6 +39,9 @@ public class UserVO {
     @Column(name = "fcm_token", nullable = true, unique = true, length = 255)
     String fcmToken;
 
+    @Column(name = "image_url", nullable = false, unique = false, length = 255)
+    String imageUrl;
+
     @CreationTimestamp
     @Column(name = "created_at")
     LocalDateTime createdAt;
@@ -47,4 +50,13 @@ public class UserVO {
     @JoinColumn(name = "auth_fk", nullable = false, updatable = true)
     private AuthVO auth;
 
+    @Builder
+    public UserVO(String email, String nickname, String oauth, boolean activated, AuthVO auth, String imageUrl) {
+        this.email = email;
+        this.nickname = nickname;
+        this.oauth = oauth;
+        this.activated = activated;
+        this.auth = auth;
+        this.imageUrl = imageUrl;
+    }
 }
