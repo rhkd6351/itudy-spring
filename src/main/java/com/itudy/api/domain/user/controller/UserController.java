@@ -8,10 +8,12 @@ import com.itudy.api.domain.user.service.UserFindService;
 import com.itudy.api.domain.user.service.UserUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -22,7 +24,7 @@ public class UserController {
     private final UserFindService userFindService;
     private final UserUpdateService userUpdateService;
 
-    @GetMapping(path = "/user")
+    @GetMapping(path = "/users")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<ResponseWrapper<UserDTO>> getMyInfo() {
 
@@ -37,7 +39,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/user")
+    @PutMapping(path = "/users")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<ResponseWrapper<String>> updateInfo(
             @RequestBody @Validated UpdateInfo.Request updateInfo) {
@@ -46,8 +48,25 @@ public class UserController {
         userUpdateService.update(user.getIdx(), updateInfo);
 
         ResponseWrapper<String> response = new ResponseWrapper<>(
-                "변경",
+                "성공",
                 "사용자 닉네임 변경",
+                HttpStatus.OK.value());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/users/images", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    public ResponseEntity<ResponseWrapper<String>> updateImage(
+            @RequestPart(value = "image", required = true) MultipartFile image
+    ) {
+
+        UserVO user = userFindService.getMyUserWithAuthorities();
+        userUpdateService.updateImage(user.getIdx(), image);
+
+        ResponseWrapper<String> response = new ResponseWrapper<>(
+                "이미지 변경 성공",
+                "사용자 이미지 변경",
                 HttpStatus.OK.value());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
