@@ -26,6 +26,12 @@ public class TechVO {
     @Column(name = "image_url", nullable = false, unique = false, length = 255)
     String imageUrl;
 
+    @OneToMany(mappedBy = "tech")
+    List<ProjectTechMapping> projects;
+
+    @OneToMany(mappedBy = "tech")
+    List<PortfolioTechMapping> portfolios;
+
     @Builder
     public TechVO(String name, String imageUrl) {
         this.name = name;

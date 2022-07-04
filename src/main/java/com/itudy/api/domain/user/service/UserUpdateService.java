@@ -67,7 +67,7 @@ public class UserUpdateService {
 
         UserVO user = userFindService.findByIdx(userIdx);
         CommonImageVO commonImageVO = commonImageService.save(image);
-        user.setImageUrl(host + "/" + commonImageVO.getName());
+        user.setImageUrl(host + "/api/v1/common/images/" + commonImageVO.getName());
 
     }
 }

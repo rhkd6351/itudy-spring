@@ -35,7 +35,7 @@ public class TechUpdateService {
         CommonImageVO image = commonImageService.save(mf);
 
         TechVO tech = TechVO.builder()
-                .imageUrl(host + "/" + image.getName())
+                .imageUrl(host + "/api/v1/common/images/" + image.getName())
                 .name(name)
                 .build();
 

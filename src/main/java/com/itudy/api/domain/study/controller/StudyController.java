@@ -4,7 +4,6 @@ import com.itudy.api.common.dto.PageDTO;
 import com.itudy.api.common.dto.ResponseWrapper;
 import com.itudy.api.domain.study.domain.FieldVO;
 import com.itudy.api.domain.study.domain.StudyVO;
-import com.itudy.api.domain.study.dto.FieldDTO;
 import com.itudy.api.domain.study.dto.StudyCreateRequest;
 import com.itudy.api.domain.study.dto.StudyDTO;
 import com.itudy.api.domain.study.service.FieldFindService;
