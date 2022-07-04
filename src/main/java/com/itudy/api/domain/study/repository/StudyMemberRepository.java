@@ -2,7 +2,6 @@ package com.itudy.api.domain.study.repository;
 
 import com.itudy.api.domain.study.domain.StudyMemberID;
 import com.itudy.api.domain.study.domain.StudyMemberVO;
-import com.itudy.api.domain.study.domain.StudyVO;
 import com.itudy.api.domain.user.domain.UserVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

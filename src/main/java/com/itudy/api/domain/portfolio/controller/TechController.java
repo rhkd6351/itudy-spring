@@ -1,11 +1,11 @@
-package com.itudy.api.domain.study.controller;
+package com.itudy.api.domain.portfolio.controller;
 
 import com.itudy.api.common.dto.PageDTO;
 import com.itudy.api.common.dto.ResponseWrapper;
-import com.itudy.api.domain.study.domain.FieldVO;
-import com.itudy.api.domain.study.dto.FieldDTO;
-import com.itudy.api.domain.study.service.FieldFindService;
-import com.itudy.api.domain.study.service.FieldUpdateService;
+import com.itudy.api.domain.portfolio.dto.TechDTO;
+import com.itudy.api.domain.portfolio.entity.TechVO;
+import com.itudy.api.domain.portfolio.service.TechFindService;
+import com.itudy.api.domain.portfolio.service.TechUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,57 +24,57 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-public class FieldController {
+public class TechController {
 
-    private final FieldFindService fieldFindService;
-    private final FieldUpdateService fieldUpdateService;
+    private final TechFindService techFindService;
+    private final TechUpdateService techUpdateService;
 
 
-    @GetMapping(path = "/studies/fields")
+    @GetMapping(path = "/tech")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<ResponseWrapper<PageDTO<FieldDTO>>> getFields(
+    public ResponseEntity<ResponseWrapper<PageDTO<TechDTO>>> getTechList(
             @PageableDefault(size = 10, direction = Direction.ASC) Pageable pageable,
             @RequestParam(defaultValue = "") String query
     ) {
-        Page<FieldVO> page = fieldFindService.getAllByQuery(pageable, query);
-        List<FieldDTO> dtos = page.stream().map(FieldDTO::fromEntity).collect(Collectors.toList());
+        Page<TechVO> page = techFindService.getAllByQuery(pageable, query);
+        List<TechDTO> dtos = page.stream().map(TechDTO::fromEntity).collect(Collectors.toList());
 
-        PageDTO<FieldDTO> pageDTO = PageDTO.<FieldDTO>builder()
+        PageDTO<TechDTO> pageDTO = PageDTO.<TechDTO>builder()
                 .contents(dtos)
                 .currentPage(pageable.getPageNumber())
                 .totalPage(page.getTotalPages() - 1)
                 .build();
 
-        ResponseWrapper<PageDTO<FieldDTO>> data = new ResponseWrapper<>(
-                pageDTO, "field list", HttpStatus.OK.value());
+        ResponseWrapper<PageDTO<TechDTO>> data = new ResponseWrapper<>(
+                pageDTO, "tech list", HttpStatus.OK.value());
 
         return new ResponseEntity<>(data, HttpStatus.OK);
 
     }
 
-    @PostMapping(path = "/admin/studies/fields", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(path = "/admin/tech", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseWrapper<String>> saveField(
+    public ResponseEntity<ResponseWrapper<String>> saveTech(
             @RequestPart(name = "image", required = true) MultipartFile mf,
             @RequestPart(name = "name", required = true) String name
     ) {
-        Long save = fieldUpdateService.save(mf, name);
+        Long save = techUpdateService.save(mf, name);
 
         ResponseWrapper<String> data = new ResponseWrapper<>("등록에 성공하였습니다.",
-                "field apply success", HttpStatus.CREATED.value());
+                "tech apply success", HttpStatus.CREATED.value());
 
         return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/studies/fields/{field-idx}")
+    @DeleteMapping(path = "/tech/{tech-idx}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseWrapper<String>> deleteField(
-            @PathVariable(name = "field-idx") Long idx
+    public ResponseEntity<ResponseWrapper<String>> deleteTech(
+            @PathVariable(name = "tech-idx") Long idx
     ) {
-        fieldUpdateService.delete(idx);
+        techUpdateService.delete(idx);
 
         ResponseWrapper<String> data = new ResponseWrapper<>("삭제에 성공하였습니다.",
-                "field delete success", HttpStatus.NO_CONTENT.value());
+                "tech delete success", HttpStatus.NO_CONTENT.value());
 
         return new ResponseEntity<>(data, HttpStatus.NO_CONTENT);
     }
