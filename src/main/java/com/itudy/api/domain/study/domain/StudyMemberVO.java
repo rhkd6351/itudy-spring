@@ -13,6 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "STUDY_MEMBER_TB")
+@IdClass(StudyMemberID.class)
 public class StudyMemberVO implements Serializable {
 
     @Id
@@ -25,7 +26,7 @@ public class StudyMemberVO implements Serializable {
     @ManyToOne(targetEntity = UserVO.class)
     UserVO user;
 
-    @Column(name = "role", unique = true, nullable = false, length = 45)
+    @Column(name = "role", unique = false, nullable = false, length = 45)
     String role;
 
     @ManyToOne(fetch = FetchType.LAZY)

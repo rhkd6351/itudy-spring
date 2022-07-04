@@ -24,10 +24,10 @@ public class StudyVO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idx;
 
-    @Column(name = "name", unique = true, nullable = false, length = 45)
+    @Column(name = "name", unique = false, nullable = false, length = 45)
     String name;
 
-    @Column(name = "description", unique = true, nullable = false, length = 500)
+    @Column(name = "description", unique = false, nullable = false, length = 500)
     String description;
 
     @Column(name = "image_url", nullable = false, unique = false, length = 255)

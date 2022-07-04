@@ -51,6 +51,27 @@ public class StudyController {
         return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/studies")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<ResponseWrapper<PageDTO<StudyDTO>>> getMyStudy(
+            @PageableDefault(size = 10, direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        Page<StudyVO> page = studyFindService.getJoinedStudies(pageable);
+        List<StudyDTO> dtos = page.stream().map(StudyDTO::fromEntity).collect(Collectors.toList());
+
+        PageDTO<StudyDTO> pageDTO = PageDTO.<StudyDTO>builder()
+                .contents(dtos)
+                .currentPage(pageable.getPageNumber())
+                .totalPage(page.getTotalPages() - 1)
+                .build();
+
+        ResponseWrapper<PageDTO<StudyDTO>> data = new ResponseWrapper<>(
+                pageDTO, "joined study list", HttpStatus.OK.value());
+
+        return new ResponseEntity<>(data, HttpStatus.OK);
+
+    }
+
     @GetMapping(path = "/admin/studies")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseWrapper<PageDTO<StudyDTO>>> getAllStudy(
