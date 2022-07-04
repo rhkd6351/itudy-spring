@@ -4,6 +4,8 @@ import com.itudy.api.common.entity.CommonImageVO;
 import com.itudy.api.common.service.CommonImageService;
 import com.itudy.api.domain.study.domain.FieldVO;
 import com.itudy.api.domain.study.repository.FieldRepository;
+import com.itudy.api.exception.ApiException;
+import com.itudy.api.exception.ExceptionEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +22,16 @@ public class FieldUpdateService {
 
     private final FieldRepository fieldRepository;
     private final CommonImageService commonImageService;
+    private final FieldFindService fieldFindService;
 
     @Value("${server.url}")
     private String host;
 
-    public Long save(MultipartFile mf, String name){
+    @Transactional
+    public Long save(MultipartFile mf, String name) {
+
+        if (fieldRepository.existsByName(name))
+            throw new ApiException(ExceptionEnum.DUPLICATED_EXCEPTION);
 
         CommonImageVO image = commonImageService.save(mf);
 
@@ -36,4 +43,9 @@ public class FieldUpdateService {
         return fieldRepository.save(field).getIdx();
     }
 
+    @Transactional
+    public void delete(Long idx) {
+        FieldVO field = fieldFindService.findByIdx(idx);
+        fieldRepository.delete(field);
+    }
 }

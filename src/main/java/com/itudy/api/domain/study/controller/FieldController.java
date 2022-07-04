@@ -1,11 +1,13 @@
 package com.itudy.api.domain.study.controller;
 
+import com.itudy.api.common.dto.PageDTO;
 import com.itudy.api.common.dto.ResponseWrapper;
 import com.itudy.api.domain.study.domain.FieldVO;
 import com.itudy.api.domain.study.dto.FieldDTO;
 import com.itudy.api.domain.study.service.FieldFindService;
 import com.itudy.api.domain.study.service.FieldUpdateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -30,14 +32,21 @@ public class FieldController {
 
     @GetMapping(path = "/studies/fields")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<ResponseWrapper<List<FieldDTO>>> getFields(
+    public ResponseEntity<ResponseWrapper<PageDTO<FieldDTO>>> getFields(
             @PageableDefault(size = 10, direction = Direction.ASC) Pageable pageable,
             @RequestParam(defaultValue = "") String query
     ) {
-        List<FieldVO> fields = fieldFindService.getAllByQuery(pageable, query);
+        Page<FieldVO> page = fieldFindService.getAllByQuery(pageable, query);
+        List<FieldDTO> dtos = page.stream().map(FieldDTO::fromEntity).collect(Collectors.toList());
 
-        ResponseWrapper<List<FieldDTO>> data = new ResponseWrapper<>(fields.stream().map(FieldDTO::fromEntity).collect(Collectors.toList()),
-                "field list", HttpStatus.OK.value());
+        PageDTO<FieldDTO> pageDTO = PageDTO.<FieldDTO>builder()
+                .contents(dtos)
+                .currentPage(pageable.getPageNumber())
+                .totalPage(page.getTotalPages() - 1)
+                .build();
+
+        ResponseWrapper<PageDTO<FieldDTO>> data = new ResponseWrapper<>(
+                pageDTO, "field list", HttpStatus.OK.value());
 
         return new ResponseEntity<>(data, HttpStatus.OK);
 
@@ -55,6 +64,19 @@ public class FieldController {
                 "field list", HttpStatus.CREATED.value());
 
         return new ResponseEntity<>(data, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/studies/fields/{field-idx}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public ResponseEntity<ResponseWrapper<String>> deleteField(
+            @PathVariable(name = "field-idx") Long idx
+    ) {
+        fieldUpdateService.delete(idx);
+
+        ResponseWrapper<String> data = new ResponseWrapper<>("삭제에 성공하였습니다.",
+                "field delete success", HttpStatus.NO_CONTENT.value());
+
+        return new ResponseEntity<>(data, HttpStatus.NO_CONTENT);
     }
 
 }
