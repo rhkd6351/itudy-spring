@@ -52,7 +52,7 @@ public class FieldController {
 
     }
 
-    @PostMapping(path = "/studies/fields", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(path = "/admin/studies/fields", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseWrapper<String>> saveField(
             @RequestPart(name = "image", required = true) MultipartFile mf,

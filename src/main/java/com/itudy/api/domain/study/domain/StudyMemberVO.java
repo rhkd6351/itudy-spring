@@ -2,6 +2,7 @@ package com.itudy.api.domain.study.domain;
 
 import com.itudy.api.domain.user.domain.UserVO;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,23 @@ public class StudyMemberVO implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_fk")
     PositionVO position;
+
+    @Builder
+    public StudyMemberVO(StudyVO study, UserVO user, String role, PositionVO position) {
+        this.study = study;
+        this.user = user;
+        this.role = role;
+        this.position = position;
+    }
+
+    public enum Role{
+        LEADER("leader"),
+        MEMBER("member");
+
+        public final String role;
+
+        Role(String role) {
+            this.role = role;
+        }
+    }
 }

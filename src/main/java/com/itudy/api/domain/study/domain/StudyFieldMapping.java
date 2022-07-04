@@ -1,6 +1,7 @@
 package com.itudy.api.domain.study.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,9 @@ public class StudyFieldMapping implements Serializable {
     @ManyToOne(targetEntity = FieldVO.class)
     FieldVO field;
 
+    @Builder
+    public StudyFieldMapping(StudyVO study, FieldVO field) {
+        this.study = study;
+        this.field = field;
+    }
 }

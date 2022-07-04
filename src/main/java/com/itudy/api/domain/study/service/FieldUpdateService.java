@@ -36,7 +36,7 @@ public class FieldUpdateService {
         CommonImageVO image = commonImageService.save(mf);
 
         FieldVO field = FieldVO.builder()
-                .imageUrl(host + "/api/v1/common/images/" + image.getName())
+                .imageUrl(host + "/" + image.getName())
                 .name(name)
                 .build();
 

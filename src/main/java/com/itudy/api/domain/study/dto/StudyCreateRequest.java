@@ -1,0 +1,30 @@
+package com.itudy.api.domain.study.dto;
+
+import com.itudy.api.domain.study.domain.PositionVO;
+import com.itudy.api.util.Enum;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class StudyCreateRequest {
+    @NotBlank
+    String name;
+
+    @NotNull
+    String description;
+
+    @NotBlank
+    @Enum(enumClass = PositionVO.Name.class, ignoreCase = true)
+    String position;
+
+    @NotNull
+    List<Long> fields;
+}

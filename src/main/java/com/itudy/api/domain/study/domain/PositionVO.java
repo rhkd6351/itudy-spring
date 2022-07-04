@@ -19,4 +19,16 @@ public class PositionVO {
     @Column(name = "name", unique = true, nullable = false, length = 45)
     String name;
 
+    public enum Name{
+        DEVELOPER("developer"),
+        PM("pm"),
+        DESIGNER("designer"),;
+
+        public final String name;
+
+        Name(String name) {
+            this.name = name;
+        }
+    }
+
 }
