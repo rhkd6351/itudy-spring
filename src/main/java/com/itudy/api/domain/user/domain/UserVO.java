@@ -1,6 +1,7 @@
 package com.itudy.api.domain.user.domain;
 
 
+import com.itudy.api.domain.study.domain.StudyMemberVO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -49,6 +52,11 @@ public class UserVO {
     @ManyToOne(targetEntity = AuthVO.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "auth_fk", nullable = false, updatable = true)
     private AuthVO auth;
+
+
+    @OneToMany(mappedBy = "user")
+    List<StudyMemberVO> studies = new ArrayList<>();
+
 
     @Builder
     public UserVO(String email, String nickname, String oauth, boolean activated, AuthVO auth, String imageUrl) {
