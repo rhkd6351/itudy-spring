@@ -24,6 +24,9 @@ public class UserController {
     private final UserFindService userFindService;
     private final UserUpdateService userUpdateService;
 
+    /**
+     * get my information
+     */
     @GetMapping(path = "/users")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<ResponseWrapper<UserDTO>> getMyInfo() {
@@ -39,9 +42,12 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * update user information (nickname)
+     */
     @PutMapping(path = "/users")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<ResponseWrapper<String>> updateInfo(
+    public ResponseEntity<ResponseWrapper<String>> updateUserInfo(
             @RequestBody @Validated UpdateInfo.Request updateInfo) {
 
         UserVO user = userFindService.getMyUserWithAuthorities();
@@ -55,9 +61,12 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * update user image
+     */
     @PutMapping(path = "/users/images", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<ResponseWrapper<String>> updateImage(
+    public ResponseEntity<ResponseWrapper<String>> updateUserImage(
             @RequestPart(value = "image", required = true) MultipartFile image
     ) {
 
@@ -71,6 +80,4 @@ public class UserController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 }

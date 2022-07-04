@@ -9,6 +9,8 @@ import com.itudy.api.exception.ApiException;
 import com.itudy.api.exception.ExceptionEnum;
 import com.itudy.api.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +20,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,8 +35,11 @@ public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
 
+    @Value("${jwt.redirect-url}")
+    private String redirectURL;
+
     @GetMapping(path = "/login/success")
-    public ResponseEntity<ResponseWrapper<JwtResponse>> loginSuccess(){
+    public ResponseEntity<ResponseWrapper<JwtResponse>> loginSuccess() throws URISyntaxException {
 
         Long idx = (Long)httpSession.getAttribute("user");
         UserVO user = userFindService.findByIdx(idx);
@@ -45,9 +52,12 @@ public class AuthController {
 
         String accessToken = tokenProvider.createToken(authentication);
         String refreshToken = tokenProvider.createRefreshToken(authentication);
+        URI redirectURI = new URI(redirectURL + "?access=" + accessToken + "&refresh=" + refreshToken);
 
-        ResponseWrapper<JwtResponse> result = new ResponseWrapper<JwtResponse>(new JwtResponse(accessToken, refreshToken), "로그인 성공", HttpStatus.OK.value());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(redirectURI);
+
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
 
     @PostMapping(path = "/authorization")
