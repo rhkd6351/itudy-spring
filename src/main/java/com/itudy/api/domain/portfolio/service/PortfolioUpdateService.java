@@ -11,6 +11,8 @@ import com.itudy.api.domain.study.domain.PositionVO;
 import com.itudy.api.domain.study.service.PositionFindService;
 import com.itudy.api.domain.user.domain.UserVO;
 import com.itudy.api.domain.user.service.UserFindService;
+import com.itudy.api.exception.ApiException;
+import com.itudy.api.exception.ExceptionEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -87,6 +89,11 @@ public class PortfolioUpdateService {
                        MultipartFile file) {
 
         PortfolioVO portfolio = portfolioFindService.getByIdx(idx);
+        UserVO user = userFindService.getMyUserWithAuthorities();
+
+        if(portfolio.getUser() != user)
+            throw new ApiException(ExceptionEnum.ACCESS_DENIED_EXCEPTION);
+
         PositionVO position = positionFindService.findById(positionName);
         CommonPdfVO pdf = commonPdfService.save(file);
 
