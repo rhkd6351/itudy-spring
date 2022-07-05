@@ -24,6 +24,7 @@ import java.util.List;
 public class PortfolioUpdateService {
 
     private final PortfolioRepository portfolioRepository;
+    private final PortfolioFindService portfolioFindService;
     private final TechFindService techFindService;
     private final UserFindService userFindService;
     private final PositionFindService positionFindService;
@@ -32,14 +33,60 @@ public class PortfolioUpdateService {
     private String host;
 
     @Transactional
-    public Long save(String title,
-                     String description,
-                     List<ProjectDTO> projects,
-                     List<Long> techIds,
-                     String positionName,
-                     MultipartFile file){
+    public Long save(
+            String title,
+            String description,
+            List<ProjectDTO> projects,
+            List<Long> techIds,
+            String positionName,
+            MultipartFile file) {
 
         UserVO user = userFindService.getMyUserWithAuthorities();
+        PositionVO position = positionFindService.findById(positionName);
+        CommonPdfVO pdf = commonPdfService.save(file);
+        PortfolioVO portfolio;
+
+        List<ProjectVO> projectVOS = projects.stream().map(
+                i -> {
+                    ProjectVO project = ProjectVO.builder()
+                            .title(i.getTitle())
+                            .description(i.getDescription())
+                            .build();
+
+                    for (TechDTO tech : i.getTechs())
+                        project.addTech(techFindService.findByIdx(tech.getIdx()));
+
+                    return project;
+                }
+        ).toList();
+
+        portfolio = PortfolioVO.builder()
+                .title(title)
+                .description(description)
+                .user(user)
+                .position(position)
+                .file(host + "/api/v1/common/files/" + pdf.getName())
+                .build();
+
+        for (ProjectVO project : projectVOS)
+            portfolio.addProject(project);
+
+        for (Long id : techIds)
+            portfolio.addTech(techFindService.findByIdx(id));
+
+        return portfolioRepository.save(portfolio).getIdx();
+    }
+
+    @Transactional
+    public Long update(Long idx,
+                       String title,
+                       String description,
+                       List<ProjectDTO> projects,
+                       List<Long> techIds,
+                       String positionName,
+                       MultipartFile file) {
+
+        PortfolioVO portfolio = portfolioFindService.getByIdx(idx);
         PositionVO position = positionFindService.findById(positionName);
         CommonPdfVO pdf = commonPdfService.save(file);
 
@@ -57,23 +104,20 @@ public class PortfolioUpdateService {
                 }
         ).toList();
 
-        PortfolioVO portfolio = PortfolioVO.builder()
-                .title(title)
-                .description(description)
-                .user(user)
-                .position(position)
-                .file(host + "/api/v1/common/files/" + pdf.getName())
-                .build();
+        portfolio.setTitle(title);
+        portfolio.setDescription(description);
+        portfolio.setPosition(position);
+        portfolio.setFile(host + "/api/v1/common/files/" + pdf.getName());
+        portfolio.removeProjects();
+        portfolio.removeTechs();
+        portfolioRepository.saveAndFlush(portfolio);
 
-        for(ProjectVO project : projectVOS)
+        for (ProjectVO project : projectVOS)
             portfolio.addProject(project);
 
-        for(Long id : techIds)
+        for (Long id : techIds)
             portfolio.addTech(techFindService.findByIdx(id));
 
-
-        return portfolioRepository.save(portfolio).getIdx();
+        return idx;
     }
-
-
 }

@@ -15,6 +15,8 @@ import java.util.List;
 @Getter
 public class SavePortfolioRequest {
 
+    Long idx;
+
     @NotNull
     String title;
 

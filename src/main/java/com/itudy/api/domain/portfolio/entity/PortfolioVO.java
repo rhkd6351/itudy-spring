@@ -44,19 +44,20 @@ public class PortfolioVO {
     @JoinColumn(name = "user_fk")
     UserVO user;
 
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     List<PortfolioTechMapping> techs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     List<ProjectVO> projects = new ArrayList<>();
 
     @Builder
-    public PortfolioVO(String title, String description, PositionVO position, UserVO user, String file) {
+    public PortfolioVO(String title, String description, PositionVO position, UserVO user, String file, Long idx) {
         this.title = title;
         this.description = description;
         this.position = position;
         this.user = user;
         this.file = file;
+        this.idx = idx;
     }
 
     public void addTech(TechVO tech) {
@@ -69,5 +70,30 @@ public class PortfolioVO {
     public void addProject(ProjectVO project) {
         this.projects.add(project);
         project.setPortfolio(this);
+    }
+
+    public void setPosition(PositionVO position) {
+        this.position = position;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    public void removeProjects() {
+        this.projects.clear();
+    }
+
+    public void removeTechs() {
+        this.techs.clear();
+
     }
 }

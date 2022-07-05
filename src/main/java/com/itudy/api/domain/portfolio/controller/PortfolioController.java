@@ -26,13 +26,24 @@ public class PortfolioController {
             @RequestPart(name = "data") SavePortfolioRequest request
     ) {
 
-        Long savedPortfolio = portfolioUpdateService.save(
-                request.getTitle(),
-                request.getDescription(),
-                request.getProjects(),
-                request.getTechIds(),
-                request.getPosition(),
-                file);
+        if (request.getIdx() == null)
+            portfolioUpdateService.save(
+                    request.getTitle(),
+                    request.getDescription(),
+                    request.getProjects(),
+                    request.getTechIds(),
+                    request.getPosition(),
+                    file);
+        else
+            portfolioUpdateService.update(
+                    request.getIdx(),
+                    request.getTitle(),
+                    request.getDescription(),
+                    request.getProjects(),
+                    request.getTechIds(),
+                    request.getPosition(),
+                    file);
+
 
         ResponseWrapper<String> data = new ResponseWrapper<>("등록에 성공하였습니다.",
                 "portfolio apply success", HttpStatus.CREATED.value());
