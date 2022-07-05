@@ -1,7 +1,7 @@
 package com.itudy.api.domain.portfolio.service;
 
-import com.itudy.api.common.entity.CommonPdfVO;
-import com.itudy.api.common.service.CommonPdfService;
+import com.itudy.api.domain.common.entity.CommonPdfVO;
+import com.itudy.api.domain.common.service.CommonPdfService;
 import com.itudy.api.domain.portfolio.dto.ProjectDTO;
 import com.itudy.api.domain.portfolio.dto.TechDTO;
 import com.itudy.api.domain.portfolio.entity.PortfolioVO;

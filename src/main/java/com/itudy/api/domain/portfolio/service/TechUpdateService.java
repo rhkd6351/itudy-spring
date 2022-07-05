@@ -1,12 +1,9 @@
 package com.itudy.api.domain.portfolio.service;
 
-import com.itudy.api.common.entity.CommonImageVO;
-import com.itudy.api.common.service.CommonImageService;
+import com.itudy.api.domain.common.entity.CommonImageVO;
+import com.itudy.api.domain.common.service.CommonImageService;
 import com.itudy.api.domain.portfolio.entity.TechVO;
 import com.itudy.api.domain.portfolio.repository.TechRepository;
-import com.itudy.api.domain.study.domain.FieldVO;
-import com.itudy.api.domain.study.repository.FieldRepository;
-import com.itudy.api.domain.study.service.FieldFindService;
 import com.itudy.api.exception.ApiException;
 import com.itudy.api.exception.ExceptionEnum;
 import lombok.RequiredArgsConstructor;

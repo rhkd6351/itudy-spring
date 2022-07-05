@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,7 +25,7 @@ public class ProjectVO {
     String description;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    List<ProjectTechMapping> techs = new ArrayList<>();
+    Set<ProjectTechMapping> techs = new LinkedHashSet<>();
 
     @ManyToOne(targetEntity = PortfolioVO.class)
     @JoinColumn(name = "portfolio_fk")

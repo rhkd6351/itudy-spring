@@ -1,6 +1,6 @@
 package com.itudy.api.util;
 
-import com.itudy.api.common.entity.FileInfo;
+import com.itudy.api.domain.common.entity.FileInfo;
 import com.itudy.api.exception.ApiException;
 import com.itudy.api.exception.ExceptionEnum;
 import org.springframework.beans.factory.annotation.Value;

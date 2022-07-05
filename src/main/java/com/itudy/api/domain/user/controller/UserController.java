@@ -1,6 +1,6 @@
 package com.itudy.api.domain.user.controller;
 
-import com.itudy.api.common.dto.ResponseWrapper;
+import com.itudy.api.domain.common.dto.ResponseWrapper;
 import com.itudy.api.domain.user.domain.UserVO;
 import com.itudy.api.domain.user.dto.UpdateInfo;
 import com.itudy.api.domain.user.dto.UserDTO;

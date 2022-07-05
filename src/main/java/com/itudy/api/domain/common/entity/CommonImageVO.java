@@ -1,4 +1,4 @@
-package com.itudy.api.common.entity;
+package com.itudy.api.domain.common.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.itudy.api.common.dto;
+package com.itudy.api.domain.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

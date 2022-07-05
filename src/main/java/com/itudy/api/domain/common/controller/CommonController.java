@@ -1,7 +1,7 @@
-package com.itudy.api.common.controller;
+package com.itudy.api.domain.common.controller;
 
-import com.itudy.api.common.service.CommonImageService;
-import com.itudy.api.common.service.CommonPdfService;
+import com.itudy.api.domain.common.service.CommonImageService;
+import com.itudy.api.domain.common.service.CommonPdfService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

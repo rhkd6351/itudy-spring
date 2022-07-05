@@ -1,7 +1,7 @@
 package com.itudy.api.domain.portfolio.controller;
 
-import com.itudy.api.common.dto.PageDTO;
-import com.itudy.api.common.dto.ResponseWrapper;
+import com.itudy.api.domain.common.dto.PageDTO;
+import com.itudy.api.domain.common.dto.ResponseWrapper;
 import com.itudy.api.domain.portfolio.dto.TechDTO;
 import com.itudy.api.domain.portfolio.entity.TechVO;
 import com.itudy.api.domain.portfolio.service.TechFindService;

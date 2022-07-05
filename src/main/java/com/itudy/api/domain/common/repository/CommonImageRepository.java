@@ -1,7 +1,7 @@
-package com.itudy.api.common.repository;
+package com.itudy.api.domain.common.repository;
 
 
-import com.itudy.api.common.entity.CommonImageVO;
+import com.itudy.api.domain.common.entity.CommonImageVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

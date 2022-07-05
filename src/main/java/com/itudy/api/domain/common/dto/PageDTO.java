@@ -1,4 +1,4 @@
-package com.itudy.api.common.dto;
+package com.itudy.api.domain.common.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

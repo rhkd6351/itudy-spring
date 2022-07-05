@@ -10,8 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,7 +44,7 @@ public class PortfolioVO {
     UserVO user;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<PortfolioTechMapping> techs = new ArrayList<>();
+    Set<PortfolioTechMapping> techs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     List<ProjectVO> projects = new ArrayList<>();
