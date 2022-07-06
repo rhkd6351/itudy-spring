@@ -33,27 +33,17 @@ public class PortfolioController {
     @PostMapping(path = "/users/portfolios", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<ResponseWrapper<String>> savePortfolio(
-            @RequestPart(name = "image", required = true) MultipartFile file,
+            @RequestPart(name = "file", required = true) MultipartFile file,
             @RequestPart(name = "data") SavePortfolioRequest request
     ) {
 
-        if (request.getIdx() == null)
-            portfolioUpdateService.save(
-                    request.getTitle(),
-                    request.getDescription(),
-                    request.getProjects(),
-                    request.getTechIds(),
-                    request.getPosition(),
-                    file);
-        else
-            portfolioUpdateService.update(
-                    request.getIdx(),
-                    request.getTitle(),
-                    request.getDescription(),
-                    request.getProjects(),
-                    request.getTechIds(),
-                    request.getPosition(),
-                    file);
+        Long saved = portfolioUpdateService.save(
+                request.getTitle(),
+                request.getDescription(),
+                request.getProjects(),
+                request.getTechIds(),
+                request.getPosition(),
+                file);
 
 
         ResponseWrapper<String> data = new ResponseWrapper<>("등록에 성공하였습니다.",
@@ -62,11 +52,36 @@ public class PortfolioController {
         return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
+
+    @PutMapping(path = "/users/portfolios/{portfolio-idx}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    public ResponseEntity<ResponseWrapper<String>> updatePortfolio(
+            @RequestPart(name = "file", required = true) MultipartFile file,
+            @RequestPart(name = "data") SavePortfolioRequest request,
+            @PathVariable(value = "portfolio-idx") Long portfolioIdx
+    ) {
+
+        Long saved = portfolioUpdateService.update(
+                portfolioIdx,
+                request.getTitle(),
+                request.getDescription(),
+                request.getProjects(),
+                request.getTechIds(),
+                request.getPosition(),
+                file);
+
+
+        ResponseWrapper<String> data = new ResponseWrapper<>("수정에 성공하였습니다.",
+                "portfolio update success", HttpStatus.OK.value());
+
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/users/portfolios")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<ResponseWrapper<PageDTO<PortfolioDTO>>> getMyPortfolios(
             @PageableDefault(size = 10, direction = Sort.Direction.ASC) Pageable pageable
-    ){
+    ) {
 
         Page<PortfolioVO> page = portfolioFindService.findMyPortfolios(pageable);
         List<PortfolioDTO> dtos = page.stream().map(PortfolioDTO::fromEntity).toList();
