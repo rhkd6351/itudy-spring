@@ -38,7 +38,7 @@ public class StudyVO {
     LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
-    List<StudyFieldMapping> fieldMappings = new ArrayList<>();
+    Set<StudyFieldMapping> fieldMappings = new HashSet<>();
 
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
     Set<StudyMemberVO> members = new HashSet<>();

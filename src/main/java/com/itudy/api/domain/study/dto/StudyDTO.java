@@ -33,7 +33,7 @@ public class StudyDTO {
         this.members = members;
     }
 
-    public static StudyDTO fromEntity(StudyVO vo) {
+    public static StudyDTO fromEntityWithMembers(StudyVO vo) {
         return StudyDTO.builder()
                 .idx(vo.getIdx())
                 .name(vo.getName())
@@ -45,6 +45,19 @@ public class StudyDTO {
                 ).collect(Collectors.toList()))
                 .members(vo.getMembers().stream().map(
                         i -> UserDTO.fromEntitySimple(i.getUser())
+                ).collect(Collectors.toList()))
+                .build();
+    }
+
+    public static StudyDTO fromEntity(StudyVO vo) {
+        return StudyDTO.builder()
+                .idx(vo.getIdx())
+                .name(vo.getName())
+                .description(vo.getDescription())
+                .imageUrl(vo.getImageUrl())
+                .createdAt(vo.getCreatedAt())
+                .fields(vo.getFieldMappings().stream().map(
+                        i -> FieldDTO.fromEntity(i.getField())
                 ).collect(Collectors.toList()))
                 .build();
     }

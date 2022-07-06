@@ -11,7 +11,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,10 +47,10 @@ public class RecruitmentVO {
     PortfolioVO portfolio;
 
     @OneToMany(mappedBy = "recruitment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<PositionDemandVO> demands = new ArrayList<>();;
+    List<PositionDemandVO> demands = new ArrayList<>();
 
     @OneToMany(mappedBy = "recruitment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<RecruitmentTechMapping> techs = new ArrayList<>();
+    Set<RecruitmentTechMapping> techs = new HashSet<>();
 
     @Builder
     public RecruitmentVO(String title, Long hits, String description, StudyVO study, PortfolioVO portfolio) {

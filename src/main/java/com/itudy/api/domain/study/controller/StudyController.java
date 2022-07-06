@@ -56,7 +56,7 @@ public class StudyController {
             @PageableDefault(size = 10, direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<StudyVO> page = studyFindService.getJoinedStudies(pageable);
-        List<StudyDTO> dtos = page.stream().map(StudyDTO::fromEntity).collect(Collectors.toList());
+        List<StudyDTO> dtos = page.stream().map(StudyDTO::fromEntityWithMembers).collect(Collectors.toList());
 
         PageDTO<StudyDTO> pageDTO = PageDTO.<StudyDTO>builder()
                 .contents(dtos)
@@ -78,7 +78,7 @@ public class StudyController {
             @RequestParam(defaultValue = "") String query
     ) {
         Page<StudyVO> page = studyFindService.getAllByQuery(pageable, query);
-        List<StudyDTO> dtos = page.stream().map(StudyDTO::fromEntity).collect(Collectors.toList());
+        List<StudyDTO> dtos = page.stream().map(StudyDTO::fromEntityWithMembers).collect(Collectors.toList());
 
         PageDTO<StudyDTO> pageDTO = PageDTO.<StudyDTO>builder()
                 .contents(dtos)
