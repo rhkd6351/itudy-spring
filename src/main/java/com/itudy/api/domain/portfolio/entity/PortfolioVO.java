@@ -39,7 +39,7 @@ public class PortfolioVO {
     @JoinColumn(name = "position_fk")
     PositionVO position;
 
-    @ManyToOne(targetEntity = UserVO.class)
+    @ManyToOne(targetEntity = UserVO.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_fk")
     UserVO user;
 

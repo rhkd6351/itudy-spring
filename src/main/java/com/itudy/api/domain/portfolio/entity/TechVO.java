@@ -1,5 +1,6 @@
 package com.itudy.api.domain.portfolio.entity;
 
+import com.itudy.api.domain.study.domain.RecruitmentTechMapping;
 import com.itudy.api.domain.study.domain.StudyFieldMapping;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -31,6 +32,9 @@ public class TechVO {
 
     @OneToMany(mappedBy = "tech")
     List<PortfolioTechMapping> portfolios;
+
+    @OneToMany(mappedBy = "tech", fetch = FetchType.LAZY)
+    List<RecruitmentTechMapping> techs;
 
     @Builder
     public TechVO(String name, String imageUrl) {

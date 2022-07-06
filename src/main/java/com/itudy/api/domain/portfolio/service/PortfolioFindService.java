@@ -20,14 +20,14 @@ public class PortfolioFindService {
     private final UserFindService userFindService;
 
     @Transactional(readOnly = true)
-    public PortfolioVO getByIdx(Long idx) {
+    public PortfolioVO findByIdx(Long idx) {
         return portfolioRepository.findById(idx).orElseThrow(
                 () -> new ApiException(ExceptionEnum.NOT_FOUND_EXCEPTION)
         );
     }
 
     @Transactional(readOnly = true)
-    public Page<PortfolioVO> getMyPortfolios(Pageable pageable){
+    public Page<PortfolioVO> findMyPortfolios(Pageable pageable){
         UserVO user = userFindService.getMyUserWithAuthorities();
         return portfolioRepository.findByUser(user, pageable);
     }

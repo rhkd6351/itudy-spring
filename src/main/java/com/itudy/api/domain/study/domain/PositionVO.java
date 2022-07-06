@@ -4,10 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,6 +16,9 @@ public class PositionVO {
     @Id
     @Column(name = "name", unique = true, nullable = false, length = 45)
     String name;
+
+    @OneToMany(mappedBy = "position", fetch = FetchType.LAZY)
+    List<PositionDemandVO> recruits;
 
     public enum Name{
         DEVELOPER("developer"),

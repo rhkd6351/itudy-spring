@@ -53,5 +53,9 @@ public class StudyFindService {
     }
 
 
-
+    public UserVO findLeader(StudyVO study) {
+        return studyMemberRepository.findLeader(study).orElseThrow(
+                () -> new ApiException(ExceptionEnum.NOT_FOUND_EXCEPTION)
+        );
+    }
 }

@@ -88,7 +88,7 @@ public class PortfolioUpdateService {
                        String positionName,
                        MultipartFile file) {
 
-        PortfolioVO portfolio = portfolioFindService.getByIdx(idx);
+        PortfolioVO portfolio = portfolioFindService.findByIdx(idx);
         UserVO user = userFindService.getMyUserWithAuthorities();
 
         if(portfolio.getUser() != user)

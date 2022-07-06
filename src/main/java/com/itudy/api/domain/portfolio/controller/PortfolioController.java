@@ -4,7 +4,6 @@ import com.itudy.api.domain.common.dto.PageDTO;
 import com.itudy.api.domain.common.dto.ResponseWrapper;
 import com.itudy.api.domain.portfolio.dto.PortfolioDTO;
 import com.itudy.api.domain.portfolio.dto.SavePortfolioRequest;
-import com.itudy.api.domain.portfolio.dto.TechDTO;
 import com.itudy.api.domain.portfolio.entity.PortfolioVO;
 import com.itudy.api.domain.portfolio.service.PortfolioFindService;
 import com.itudy.api.domain.portfolio.service.PortfolioUpdateService;
@@ -69,7 +68,7 @@ public class PortfolioController {
             @PageableDefault(size = 10, direction = Sort.Direction.ASC) Pageable pageable
     ){
 
-        Page<PortfolioVO> page = portfolioFindService.getMyPortfolios(pageable);
+        Page<PortfolioVO> page = portfolioFindService.findMyPortfolios(pageable);
         List<PortfolioDTO> dtos = page.stream().map(PortfolioDTO::fromEntity).toList();
 
         PageDTO<PortfolioDTO> pageDTO = PageDTO.<PortfolioDTO>builder()
