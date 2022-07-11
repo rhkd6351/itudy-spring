@@ -2,6 +2,7 @@ package com.itudy.api.domain.community.entity;
 
 import com.itudy.api.domain.user.domain.UserVO;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,5 +43,15 @@ public class CommunityCommentVO {
     @OneToMany(mappedBy = "upperComment")
     List<CommunityCommentVO> childComments;
 
+    @Builder
+    public CommunityCommentVO(String content, UserVO user, CommunityPostVO post, CommunityCommentVO upperComment) {
+        this.content = content;
+        this.user = user;
+        this.post = post;
+        this.upperComment = upperComment;
+    }
 
+    public void update(String content) {
+        this.content = content;
+    }
 }

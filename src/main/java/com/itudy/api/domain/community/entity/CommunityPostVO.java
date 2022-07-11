@@ -2,6 +2,7 @@ package com.itudy.api.domain.community.entity;
 
 import com.itudy.api.domain.user.domain.UserVO;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -39,4 +40,18 @@ public class CommunityPostVO {
     @ManyToOne
     @JoinColumn(name = "board_fk")
     CommunityBoardVO board;
+
+    @Builder
+    public CommunityPostVO(String title, String content, Long view, UserVO user, CommunityBoardVO board) {
+        this.title = title;
+        this.content = content;
+        this.view = view;
+        this.user = user;
+        this.board = board;
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
