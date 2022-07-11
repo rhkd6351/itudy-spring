@@ -38,7 +38,7 @@ public class CommunityPostVO {
 
     @ManyToOne
     @JoinColumn(name = "board_fk")
-    CommunityBoardVO board;
+    CommunityBoardVO board ;
 
 
 }
