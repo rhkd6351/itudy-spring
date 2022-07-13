@@ -5,6 +5,8 @@ import com.itudy.api.domain.community.entity.CommunityPostVO;
 import com.itudy.api.domain.community.repository.CommunityCommentRepository;
 import com.itudy.api.domain.user.domain.UserVO;
 import com.itudy.api.domain.user.service.UserFindService;
+import com.itudy.api.exception.ApiException;
+import com.itudy.api.exception.ExceptionEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +31,12 @@ public class CommunityCommentUpdateService {
 
         CommunityCommentVO upperComment = null;
 
-        if(upperCommentIdx != null)
+        if(upperCommentIdx != null){
             upperComment = communityCommentFindService.findByIdx(upperCommentIdx);
+
+            if(upperComment.getUpperComment() != null)
+                throw new ApiException(ExceptionEnum.RUNTIME_EXCEPTION);
+        }
 
         CommunityCommentVO vo = CommunityCommentVO.builder()
                 .content(content)
