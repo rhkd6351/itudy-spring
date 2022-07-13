@@ -14,7 +14,8 @@ import java.util.List;
 @Table(name = "COMMUNITY_BOARD_TB")
 public class CommunityBoardVO {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idx;
 
     @Column(name = "name", length = 45)

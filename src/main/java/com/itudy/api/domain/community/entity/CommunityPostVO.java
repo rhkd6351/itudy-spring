@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 @Table(name = "COMMUNITY_POST_TB")
 public class CommunityPostVO {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idx;
 
     @Column(name = "name", length = 200)

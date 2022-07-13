@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "COMMUNITY_COMMENT_TB")
 public class CommunityCommentVO {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idx;
 
     @Lob
