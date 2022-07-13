@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CommunityCommentRepository extends JpaRepository<CommunityCommentVO, Long> {
 
-    @EntityGraph(attributePaths = {"childComments"})
-    @Query(value = "select c from CommunityCommentVO c where c.post = :post and c.upperComment is null")
+    @EntityGraph(attributePaths = {"childComments", "user"})
+    @Query(value = "select c from CommunityCommentVO c where c.post = :post and c.upperComment = null")
     Page<CommunityCommentVO> findByPostNotContainingParent(CommunityPostVO post, Pageable pageable);
 }

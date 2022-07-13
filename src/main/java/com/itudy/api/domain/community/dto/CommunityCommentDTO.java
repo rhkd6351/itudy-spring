@@ -29,8 +29,17 @@ public class CommunityCommentDTO {
                 .content(vo.getContent())
                 .createdAt(vo.getCreatedAt())
                 .childComments(vo.getChildComments().stream().map(
-                        CommunityCommentDTO::fromEntity
+                        CommunityCommentDTO::fromEntityWithoutChild
                 ).toList())
+                .user(UserDTO.fromEntitySimple(vo.getUser()))
+                .build();
+    }
+
+    public static CommunityCommentDTO fromEntityWithoutChild(CommunityCommentVO vo){
+        return CommunityCommentDTO.builder()
+                .idx(vo.getIdx())
+                .content(vo.getContent())
+                .createdAt(vo.getCreatedAt())
                 .user(UserDTO.fromEntitySimple(vo.getUser()))
                 .build();
     }
