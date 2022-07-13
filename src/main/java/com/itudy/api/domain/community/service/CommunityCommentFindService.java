@@ -26,7 +26,7 @@ public class CommunityCommentFindService {
 
     @Transactional(readOnly = true)
     public Page<CommunityCommentVO> findByPost(CommunityPostVO post, Pageable pageable){
-        return communityCommentRepository.findByPost(post, pageable);
+        return communityCommentRepository.findByPostNotContainingParent(post, pageable);
     }
 
 }
